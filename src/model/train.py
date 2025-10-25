@@ -3,10 +3,18 @@
 import argparse
 import glob
 import os
+import mlflow
+import mlflow.sklearn
 
 import pandas as pd
 
 from sklearn.linear_model import LogisticRegression
+
+# --------------------------------
+# Set up logging
+# --------------------------------
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 # define functions
@@ -39,6 +47,19 @@ def get_csvs_df(path):
 def train_model(reg_rate, X_train, X_test, y_train, y_test):
     # train model
     LogisticRegression(C=1/reg_rate, solver="liblinear").fit(X_train, y_train)
+
+def split_data(df)
+    X = df[['Pregnancies','PlasmaGlucose','DiastolicBloodPressure',
+            'TricepsThickness','SerumInsulin','BMI',
+            'DiabetesPedigree','Age']].values
+    y = df['Diabetic'].values
+    
+    # Split data into train and test sets (70/30)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.30, random_state=0
+    )
+    
+    return X_train, X_test, y_train, y_test
 
 
 def parse_args():
